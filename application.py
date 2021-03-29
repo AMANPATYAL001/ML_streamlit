@@ -1,5 +1,8 @@
 import pandas as pd
 import streamlit as st
+import os
+from fpdf import FPDF
+import base64
 from pickle import load
 from PIL import Image
 from sklearn.preprocessing import StandardScaler
@@ -48,9 +51,6 @@ fig=px.scatter_3d(df,x='sepal_length',y='sepal_width',z='petal_width',color='spe
 fig.update_layout(margin=dict(l=0,r=0,b=0,t=0))
 st.plotly_chart(fig)
 
-from fpdf import FPDF
-import base64
-
 report_text = st.text_input("Report Text")
 
 
@@ -63,16 +63,19 @@ df = px.data.gapminder().query("continent=='Oceania'")
 fig = px.line(df, x="year", y="lifeExp", color='country')
 st.plotly_chart(fig)
 if export_as_pdf:
-    fig.write_image("fig1.png")
+    fig.write_image("D:/fig1.png")
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', '', 14)
     pdf.text(2,4,report_text)
     print(report_text)
     pdf.image('fig_user_world.png',5,15,160,150)
-    pdf.image('fig1.png',5,150,150,150)
+    pdf.image('D:/fig1.png',5,150,150,150)
     pdf.set_font('Arial', 'B', 16)
     
     html = create_download_link(pdf.output(dest="S").encode("latin-1"), "test")
 
     st.markdown(html, unsafe_allow_html=True)
+    
+if os.path.exists("D:/fig1.png"):
+    os.remove("D:/fig1.png")
