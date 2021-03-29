@@ -1,30 +1,16 @@
-# from googletrans import Translator
 import pandas as pd
 import streamlit as st
 from pickle import load
 from PIL import Image
 from sklearn.preprocessing import StandardScaler
 import joblib
-import numpy as np
 import plotly.express as px
-import cv2
 species_dict={'Setosa':0,'Versicolor':1,'Virginica':2}
 value_list=list(species_dict.values())
 key_list=list(species_dict.keys())
 st.set_page_config(page_title='ML App')
 st.title('Iris Prediction App')
 image=Image.open('confusion_matrix.PNG')
-# image_iris=Image.open('iris.jpg')
-# image_iris2=Image.open('iris2.jpg')
-# image_iris3=Image.open('iris3.jpg')
-col1,col2 = st.beta_columns(2)
-
-# with col1:
-#     st.image(image_iris, use_column_width=True)
-#     st.write('''# 🌼     🌻      🌷      🌺      🌸  🍁  \n #  🌹   ☘    💐''')
-# with col2:
-#     st.image(image_iris2, use_column_width=True)
-#     st.image(image_iris3, use_column_width=True)
 
 st.write('**Random** rows of the *iris_dataset* ! ')
 df=pd.read_csv('iris.csv')
@@ -50,7 +36,7 @@ model_dict={"LogisticRegression":lr, "RandomForestClassifier":dt, "XGBClassifier
 
 sc=StandardScaler()
 model=model_dict[add_selectbox]
-x_test=np.array(([[sepal_length,sepal_width,petal_length,petal_width]]))
+x_test=[[sepal_length,sepal_width,petal_length,petal_width]]
 sc = load(open('scaler.pkl', 'rb'))
 st.write('# Predictions')
 st.write(f'''## Model: {model} 
@@ -58,17 +44,6 @@ Your Input- {x_test[0]}''')
 y_pred=model.predict(sc.transform(x_test))
 st.success('Class of Iris is '+str(key_list[y_pred[0]]))
 st.image(image,caption='Confusion Matrix and Classification Report',width=500)
-# translator = Translator()
-# text=st.text_input(label='Enter the Text',value='Here')
-# lang_selectbox = st.sidebar.selectbox("Select Language",("Hindi", "French",'German','Gujarati',))
-# if lang_selectbox=='Hindi':
-#     st.write(translator.translate(text,dest='hi').text)
-# if lang_selectbox=='French':
-#     st.write(translator.translate(text,dest='fr').text)
-# if lang_selectbox=='German':
-#     st.write(translator.translate(text,dest='de').text)
-# if lang_selectbox=='Gujarati':
-#     st.write(translator.translate(text,dest='gu').text)
 fig=px.scatter_3d(df,x='sepal_length',y='sepal_width',z='petal_width',color='species',size='petal_length',opacity=0.5)
 fig.update_layout(margin=dict(l=0,r=0,b=0,t=0))
 st.plotly_chart(fig)
