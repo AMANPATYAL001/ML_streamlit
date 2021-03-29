@@ -59,16 +59,19 @@ export_as_pdf = st.button("Export Report")
 def create_download_link(val, filename):
     b64 = base64.b64encode(val)  # val looks like b'...'
     return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
-
+df = px.data.gapminder().query("continent=='Oceania'")
+fig = px.line(df, x="year", y="lifeExp", color='country')
+st.plotly_chart(fig)
 if export_as_pdf:
+    fig.write_image("fig1.png")
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', '', 14)
     pdf.text(2,4,report_text)
     print(report_text)
     pdf.image('fig_user_world.png',5,15,160,150)
+    pdf.image('fig1.png',5,150,150,150)
     pdf.set_font('Arial', 'B', 16)
-    # pdf.cell(40, 10, report_text)
     
     html = create_download_link(pdf.output(dest="S").encode("latin-1"), "test")
 
