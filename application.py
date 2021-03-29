@@ -66,7 +66,7 @@ if export_as_pdf:
     pdf.set_font('Arial', '', 14)
     pdf.text(2,4,report_text)
     print(report_text)
-    pdf.image('fig_user_world.PNG',5,15,160,150)
+    pdf.image('fig_user_world.png',5,15,160,150)
     pdf.set_font('Arial', 'B', 16)
     # pdf.cell(40, 10, report_text)
     
