@@ -11,7 +11,17 @@ key_list=list(species_dict.keys())
 st.set_page_config(page_title='ML App')
 st.title('Iris Prediction App')
 image=Image.open('confusion_matrix.PNG')
+image_iris=Image.open('iris.jpg')
+image_iris2=Image.open('iris2.jpg')
+image_iris3=Image.open('iris3.jpg')
+col1,col2 = st.beta_columns(2)
 
+with col1:
+    st.image(image_iris, use_column_width=True)
+    st.write('''# 🌼     🌻      🌷      🌺      🌸  🍁  \n #  🌹   ☘    💐''')
+with col2:
+    st.image(image_iris2, use_column_width=True)
+    st.image(image_iris3, use_column_width=True)
 st.write('**Random** rows of the *iris_dataset* ! ')
 df=pd.read_csv('iris.csv')
 st.table(df.sample(7))
