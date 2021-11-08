@@ -10,11 +10,11 @@ value_list=list(species_dict.values())
 key_list=list(species_dict.keys())
 st.set_page_config(page_title='ML App')
 st.title('Iris Prediction App')
-image=Image.open('confusion_matrix.PNG')
-image_iris=Image.open('iris.jpg')
-image_iris2=Image.open('iris2.jpg')
-image_iris3=Image.open('iris3.jpg')
-col1,col2 = st.beta_columns(2)
+image=Image.open('res/confusion_matrix.PNG')
+image_iris=Image.open('res/iris.jpg')
+image_iris2=Image.open('res/iris2.jpg')
+image_iris3=Image.open('res/iris3.jpg')
+col1,col2 = st.columns(2)
 
 with col1:
     st.image(image_iris, use_column_width=True)
@@ -23,7 +23,7 @@ with col2:
     st.image(image_iris2, use_column_width=True)
     st.image(image_iris3, use_column_width=True)
 st.write('**Random** rows of the *iris_dataset* ! ')
-df=pd.read_csv('iris.csv')
+df=pd.read_csv('res/iris.csv')
 st.table(df.sample(7))
 st.write('## Select the Features: ')
 sepal_length=st.slider('Sepal Length',min_value=4.30,max_value=8.0,value=5.1,step=.001,key='sp')
@@ -40,14 +40,14 @@ add_selectbox = st.sidebar.selectbox(
     ("LogisticRegression", "RandomForestClassifier", "XGBClassifier",'KNeighborsClassifier','GaussianNB',
     'SVC(kernel="rbf")','SVC','GradientBoostingClassifier','AdaBoostClassifier')
 )
-lr,abc,nb,knn,dt,xg,gb,svck,svc=[joblib.load('lr_joblib')]*9
+lr,abc,nb,knn,dt,xg,gb,svck,svc=[joblib.load('res/lr_joblib')]*9
 model_dict={"LogisticRegression":lr, "RandomForestClassifier":dt, "XGBClassifier":xg,'KNeighborsClassifier':knn,'GaussianNB':nb,
     'SVC(kernel="rbf")':svck,'SVC':svc,'GradientBoostingClassifier':gb,'AdaBoostClassifier':abc}
 
 sc=StandardScaler()
 model=model_dict[add_selectbox]
 x_test=[[sepal_length,sepal_width,petal_length,petal_width]]
-sc = load(open('scaler.pkl', 'rb'))
+sc = load(open('res/scaler.pkl', 'rb'))
 st.write('# Predictions')
 st.write(f'''## Model: {model} 
 Your Input- {x_test[0]}''')
